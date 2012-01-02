@@ -359,7 +359,7 @@ this.poll = function (constants, utilities, logger, callback) {
     self.logger = logger;
 
     /* Operating system differentiation */
-    var system = process.platform;
+    var system = process.platform.toString();
     switch (system) {
     case 'darwin':
         Plugin.command = 'top -l 1';
