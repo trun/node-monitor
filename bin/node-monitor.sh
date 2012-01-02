@@ -7,9 +7,6 @@ case "$1" in
 		echo "Starting node-monitor"
 
 		cd ~/node-monitor/run
-		
-		export AWS_ACCESS_KEY_ID=ID;
-		export AWS_SECRET_ACCESS_KEY=KEY;
 	
 		#node client.js > /dev/null 2>&1 &
 		node client.js ec2=true debug=false console=false cloudwatch=true
