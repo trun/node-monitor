@@ -49,7 +49,7 @@ UtilitiesManagerModule.prototype.autoPopulate = function () {
     [Module.constants.strings.INSTANCE_ID, Module.constants.strings.LOCAL_IPV4, Module.constants.strings.PUBLIC_HOSTNAME].forEach(function (
     parameter) {
         require('child_process').exec(
-        Module.constants.strings.EC2_METADATA_SCRIPT + ' --' + parameter, function (error, stdout, stderr) {
+        Module.constants.strings.EC2_METADATA_SCRIPT + ' --' + parameter + ' | awk \'{print$2}\'', function (error, stdout, stderr) {
             if (error) {
                 console.log('Error auto-configuring: ' + error + ', exiting application');
                 process.exit(1);
