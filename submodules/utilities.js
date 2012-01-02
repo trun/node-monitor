@@ -39,10 +39,10 @@ UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
 };
 
 UtilitiesManagerModule.prototype.autoPopulate = function () {
-    if (constants.globals[constants.strings.EC2] != constants.strings.TRUE) { /* Default to localhost */
-        constants.globals[constants.strings.INSTANCE_ID] = 'none';
-        constants.globals[constants.strings.LOCAL_IPV4] = '127.0.0.1';
-        constants.globals[constants.strings.PUBLIC_HOSTNAME] = '127.0.0.1';
+    if (Module.constants.globals[Module.constants.strings.EC2] != Module.constants.strings.TRUE) { /* Default to localhost */
+    	Module.constants.globals[Module.constants.strings.INSTANCE_ID] = 'none';
+    	Module.constants.globals[Module.constants.strings.LOCAL_IPV4] = '127.0.0.1';
+    	Module.constants.globals[Module.constants.strings.PUBLIC_HOSTNAME] = '127.0.0.1';
         return;
     }
 
