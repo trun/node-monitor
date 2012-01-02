@@ -7,20 +7,48 @@ This is an EC2 monitoring application using node.js and the Amazon CloudWatch AP
 	
 Set ulimits HIGH (4000 at least)
 
-Make sure permissions for all node folders are for user (ubuntu/ec2-user), especially after git clone
-
 ### Setup
+
+Clone the repository.
 
     cd ~/
     git clone git://github.com/franklovecchio/node-monitor.git
-    cd node-monitor/bin
     
-	sudo ./monitor install-debian # Debian
-	sudo ./monitor install-centos # CentOS
+Copy the script out of the the directory into a usable location.   
+    
+    cp ~/node-monitor/bin/node-monitor.sh ~/node-monitor.sh
+    chmod a+x ~/node-monitor.sh
+    
+To install all the necessary packages (including node.js and npm):
+    
+	sudo ~/node-monitor.sh install-debian-with-deps # Debian
+	sudo ~/node.monitor.sh install-centos-with-deps # CentOS
 	
-	sudo ./monitor start
+To do a light install:
+ 
+    sudo ~/node-monitor.sh install-debian # Debian
+	sudo ~/node.monitor.sh install-centos # CentOS
+
+Start the monitor in production mode:
+	
+	sudo ~/node-monitor.sh start
 	
 ### Plugins
+
+* df.sh
+
+* filesize.js
+
+* free.js
+
+* lsof.js
+
+* services.js
+
+* top.js
+
+* who.js
+
 
 There are 2 types of plugins, `poll` and `step`.  Plugins are modules which have access to a global set of passed modules, and return asynchronously CloudWatch data.  A plugin might look like:
 
