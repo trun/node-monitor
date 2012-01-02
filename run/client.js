@@ -68,7 +68,7 @@ function NodeMonitor() {
                 constants.globals[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
 
                 /* Validate credentials */
-                credentials.check();
+                credentials.check(constants.globals);
                 callback();
             });
         });

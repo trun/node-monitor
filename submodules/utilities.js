@@ -13,7 +13,7 @@ UtilitiesManagerModule.prototype.parseCommandLineOptions = function (callback) {
         if (count != 0 && count != 1) {
             Module.constants.globals[value.split('=')[0]] = value.split('=')[1]; 
             /* Debug */
-            console.log('Read parameter: ' + value.split('=')[0] + ', with value: ' + value.split('=')[1]);
+            console.log('Read cmd parameter: ' + value.split('=')[0] + ', with value: ' + value.split('=')[1]);
         }
         count++;
     });
@@ -33,7 +33,7 @@ UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
             if (params[0] != undefined && params[0] != '') {
                 Module.constants.globals[params[0]] = params[1]; 
                 /* Debug */
-                console.log('Read parameter: ' + params[0] + ', with value: ' + params[1]);
+                console.log('Read config parameter: ' + params[0] + ', with value: ' + params[1]);
             }
         }
         callback();
@@ -51,7 +51,7 @@ UtilitiesManagerModule.prototype.autoPopulate = function () {
             } else {
                 Module.constants.globals[parameter] = stdout; 
                 /* Debug */
-                console.log('Read parameter: ' + parameter + ', with value: ' + stdout);
+                console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout);
             }
         });
     });

@@ -11,7 +11,7 @@ CredentialManagerModule = function (constants, utilities, logger) {
 };
 
 CredentialManagerModule.prototype.check = function () {
-    var checkCredentialsArray = [Module.constants.globals[Module.constants.strings.AWS_ACCESS_KEY_ID], Module.constants.globals[Module.constants.strings.AWS_SECRET_ACCESS_KEY]];
+    var checkCredentialsArray = [Module.constants.strings.AWS_ACCESS_KEY_ID, Module.constants.strings.AWS_SECRET_ACCESS_KEY];
     checkCredentialsArray.forEach(function (credential) {
         var check = Module.constants.globals[credential];
         if (!check)
