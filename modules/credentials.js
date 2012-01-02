@@ -14,10 +14,9 @@ CredentialManagerModule.prototype.check = function () {
     var checkCredentialsArray = [process.env[Module.constants.strings.AWS_ACCESS_KEY_ID], process.env[Module.constants.strings.AWS_SECRET_ACCESS_KEY]];
     checkCredentialsArray.forEach(function (credential) {
         var check = Module.constants.globals[credential];
-        if (!check) {
-            Module.utilities.exit(credential + ' is not declared');
-            Module.utilities.exit('Error with credentials');
-        }
+        if (!check)
+            Module.utilities.exit(credential + ' credential is not declared');
+        
     });
 };
 

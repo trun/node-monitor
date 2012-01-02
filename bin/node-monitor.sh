@@ -36,27 +36,28 @@ case "$1" in
 		cp ~/.node-monitor/* ~/node-monitor/plugins/
 		cd ~/node-monitor/bin
 		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
-		chmod a+x ~/node-monitor/ec2-metadata
+		chmod a+x ~/node-monitor/bin/ec2-metadata
 		
 		;;
-	'install-debian-with-deps')
+	'install-debian')
 	    yes | apt-get update 
 	    apt-get -y install libssl-dev git-core scons pkg-config build-essential curl gcc g++ python3.2
 		cd ~/
-		wget https://github.com/joyent/node/zipball/v0.6.6 && tar -xzf v0.6.6
-		cd ~/joyent-node-19a9663
+		mkdir ~/.node-monitor
+		wget http://nodejs.org/dist/v0.6.6/node-v0.6.6.tar.gz && tar -xzf node-v0.6.6.tar.gz
+		cd ~/node-v0.6.6
 		./configure
 		make
 		make install
 		export PATH=$PATH:/opt/node/bin
 		curl http://npmjs.org/install.sh | sudo sh
-		mkdir ~/.node-monitor
-		cd ~/node-monitor
-		npm link
-
-		;;
-	'install-debian')
-		yes | apt-get install git-core scons curl build-essential openssl libssl-dev
+		cd ~/
+		add-apt-repository ppa:chris-lea/zeromq
+		apt-get -y install libzmq-dev
+		git clone $GIT_PROJECT
+		cd ~/node-monitor/bin
+		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
+		chmod a+x ~/node-monitor/bin/ec2-metadata
 		cd ~/node-monitor
 		npm link
 		
@@ -76,9 +77,9 @@ case "$1" in
 		
 		;;
 	'')
-		echo "Usage: $0 [start|stop|update|install-debian|install-debian-with-deps|install-centos]"
+		echo "Usage: $0 [start|stop|update|install-debian|install-centos]"
 		;;
 	'?')
-		echo "Usage: $0 [start|stop|update|install-debian|install-debian-with-deps|install-centos]"
+		echo "Usage: $0 [start|stop|update|install-debian|install-centos]"
 		;;
 esac

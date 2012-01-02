@@ -11,7 +11,8 @@ UtilitiesManagerModule.prototype.parseCommandLineOptions = function (callback) {
     var count = 0;
     process.argv.forEach(function (value, index, array) {
         if (count != 0 && count != 1) {
-            Module.constants.globals[value.split('=')[0]] = value.split('=')[1]; /* Debug */
+            Module.constants.globals[value.split('=')[0]] = value.split('=')[1]; 
+            /* Debug */
             console.log('Read parameter: ' + value.split('=')[0] + ', with value: ' + value.split('=')[1]);
         }
         count++;
@@ -22,7 +23,7 @@ UtilitiesManagerModule.prototype.parseCommandLineOptions = function (callback) {
 UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
     fs.readFile(configFile, function (error, fd) {
         if (error) {
-            console.log('Error reading master config file, exiting');
+            console.log('Error reading master config file, exiting application');
             process.exit(1);
         }
 
@@ -30,7 +31,8 @@ UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
         for (var i = 0; i < splitBuffer.length; i++) {
             var params = splitBuffer[i].split('=');
             if (params[0] != undefined && params[0] != '') {
-                Module.constants.globals[params[0]] = params[1]; /* Debug */
+                Module.constants.globals[params[0]] = params[1]; 
+                /* Debug */
                 console.log('Read parameter: ' + params[0] + ', with value: ' + params[1]);
             }
         }
@@ -44,7 +46,7 @@ UtilitiesManagerModule.prototype.autoPopulate = function () {
         require('child_process').exec(
         Module.constants.strings.EC2_METADATA_SCRIPT + ' --' + parameter, function (error, stdout, stderr) {
             if (error) {
-                console.log('Error auto-configuring, exiting ' + error);
+                console.log('Error auto-configuring: ' + error + ', exiting application');
                 process.exit(1);
             } else {
                 Module.constants.globals[parameter] = stdout; 
