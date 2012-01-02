@@ -37,7 +37,7 @@ this.poll = function (constants, utilities, logger, callback) {
     self.logger = logger;
 
     /* Operating system differentiation */
-    var system = self.utilities.getSystemEnvironment();
+    var system = process.platform;
 
     switch (system) {
     case 'darwin':

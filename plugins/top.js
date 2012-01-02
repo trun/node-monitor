@@ -359,7 +359,8 @@ this.poll = function (constants, utilities, logger, callback) {
     self.logger = logger;
 
     /* Operating system differentiation */
-    switch (self.utilities.getSystemEnvironment()) {
+    var system = process.platform;
+    switch (system) {
     case 'darwin':
         Plugin.command = 'top -l 1';
         break;
@@ -374,7 +375,7 @@ this.poll = function (constants, utilities, logger, callback) {
     var exec = require('child_process').exec,
         child;
     child = exec(Plugin.command, function (error, stdout, stderr) {
-    	var data = Plugin.format(stdout.toString(), self.utilities.getSystemEnvironment());
+    	var data = Plugin.format(stdout.toString(), system);
         self.logger.write(self.constants.levels.INFO, 'Top returned: ' + data);
      
         callback(Plugin.name, 'Top-TotalProcesses', 'Count', JSON.parse(data)['processes']['total'], data);

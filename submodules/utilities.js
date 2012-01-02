@@ -87,10 +87,6 @@ UtilitiesManagerModule.prototype.generateFormattedDate = function () {
     return date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
 };
 
-UtilitiesManagerModule.prototype.getSystemEnvironment = function () {
-    return process.platform;
-};
-
 UtilitiesManagerModule.prototype.safeEncodeKey = function (key) {
     return key.replace(/\//g, '_');
 };
