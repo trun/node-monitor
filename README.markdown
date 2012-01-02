@@ -12,7 +12,7 @@ Make sure permissions for all node folders are for user (ubuntu/ec2-user), espec
 ### Setup
 
     cd ~/
-    git clone -b v0.6 git@github.com:franklovecchio/node-monitor.git
+    git clone git://github.com/franklovecchio/node-monitor.git
     cd node-monitor/bin
     
 	sudo ./monitor install-debian # Debian

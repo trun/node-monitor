@@ -1,53 +1,16 @@
 #!/bin/bash
 
-GIT_PROJECT=git://github.com/isidorey/node-monitor.git
+GIT_PROJECT=git://github.com/franklovecchio/node-monitor.git
 
 case "$1" in
      'start')
 		echo "Starting node-monitor"
-		
-		NODE_MONITOR=`ps -ef | grep -v grep | grep client.js | awk '{print $2'}`
-		kill -9 $NODE_MONITOR
-		
-		cd ../run
-		
-		# Credentials go here
-		#export AWS_ACCESS_KEY_ID=;
-		#export AWS_SECRET_ACCESS_KEY=;
-		#export TWILIO_SID=;
-		#export TWILIO_TOKEN=;
-		#export CLOUDSANDRA_TOKEN=;
-		#export CLOUDSANDRA_ACCOUNT=;
 
-			
-		# debug sets whether we post data or not
-		# console sets whether or not we spit to console as well as log
-		#node client.js > /dev/null 2>&1 &
-		node client-v0.5.js ec2=false debug=false console=true cloudwatch=true
-		
-		;;
-	'start-server')
-		echo "Starting node-monitor server"
-		
-		NODE_MONITOR=`ps -ef | grep -v grep | grep server.js | awk '{print $2'}`
-		kill -9 $NODE_MONITOR
-		
-		cd ../run
-		
-		# Credentials go here
-		#export AWS_ACCESS_KEY_ID=;
-		#export AWS_SECRET_ACCESS_KEY=;
-		#export TWILIO_SID=;
-		#export TWILIO_TOKEN=;
-		#export CLOUDSANDRA_TOKEN=;
-		#export CLOUDSANDRA_ACCOUNT=;
+		cd ~/node-monitor/run
 	
-			
-		# debug sets whether we post data or not
-		# console sets whether or not we spit to console as well as log
-		#node server.js > /dev/null 2>&1 &
-		node server-v0.5.js ec2=false debug=false console=true cloudwatch=false
-
+		#node client.js > /dev/null 2>&1 &
+		node client.js ec2=true debug=false console=false cloudwatch=true
+		
 		;;
 	'stop')
 		echo "Stopping node-monitor"
@@ -63,20 +26,21 @@ case "$1" in
 	'update')
 		echo "Updating node-monitor"
 		
-		cp -r /monitoring/node-monitor/config /monitoring/
-		rm -r /monitoring/node-monitor
-		cd  /monitoring
+		cd ~/
+		mkdir ~/.node-monitor
+		cp ~/node-monitor/plugins/*_config ~/.node-monitor/
+		rm -r ~/node-monitor
+		cd  ~/node-monitor
 		git clone $GIT_PROJECT
-		cp -r /monitoring/config /monitoring/node-monitor
-		chown ubuntu:ubuntu /monitoring * -Rf
+		cp ~/.node-monitor/* /node-monitor/plugins/
 		
 		;;
-	'install-debian')
+	'install-debian-with-deps')
 		yes | apt-get install git-core scons curl build-essential openssl libssl-dev
 		cd ~/
 		git clone https://github.com/joyent/node.git && cd ~/node
 		git checkout v0.4.8
-		./configure
+		./configure --without-ssl
 		make
 		make install
 		cd ~/node
@@ -85,12 +49,18 @@ case "$1" in
 		npm link
 
 		;;
+	'install-debian')
+		yes | apt-get install git-core scons curl build-essential openssl libssl-dev
+		cd ~/node-monitor
+		npm link
+		
+		;;
 	'install-centos')
 		yes | yum install gcc gcc-c++ autoconf automake openssl-devel nginx unzip gcc-c++ screen git-core monit
 		cd /monitoring
 		git clone https://github.com/joyent/node.git && cd /monitoring/node
 		git checkout v0.4.8
-		./configure
+		./configure --without-ssl
 		make
 		make install
 		cd /monitoring
@@ -100,9 +70,9 @@ case "$1" in
 		
 		;;
 	'')
-		echo "Usage: $0 [start|stop|update|install-debian|install-centos]"
+		echo "Usage: $0 [start|stop|update|install-debian|install-debian-with-deps|install-centos]"
 		;;
 	'?')
-		echo "Usage: $0 [start|stop|update|install-debian|install-centos]"
+		echo "Usage: $0 [start|stop|update|install-debian|install-debian-with-deps|install-centos]"
 		;;
 esac
