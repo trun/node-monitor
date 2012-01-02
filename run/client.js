@@ -65,10 +65,12 @@ function NodeMonitor() {
                 }
 
                 /* Set default IP */
+                console.log('DEBUG IPV4: ' + constants.globals[constants.strings.LOCAL_IPV4]);
+                console.log('DEBUG IP: ' + constants.globals[constants.strings.IP]);
                 constants.globals[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
 
                 /* Validate credentials */
-                credentials.check(constants.globals);
+                credentials.check();
                 callback();
             });
         });

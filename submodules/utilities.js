@@ -48,10 +48,10 @@ UtilitiesManagerModule.prototype.autoPopulate = function () {
             if (error) {
                 console.log('Error auto-configuring: ' + error + ', exiting application');
                 process.exit(1);
-            } else {
-                Module.constants.globals[parameter] = stdout; 
+            } else { 
                 /* Debug */
                 console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout);
+                Module.constants.globals[parameter] = stdout;
             }
         });
     });
