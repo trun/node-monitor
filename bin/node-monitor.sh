@@ -37,6 +37,7 @@ case "$1" in
 		cd ~/node-monitor/bin
 		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
 		chmod a+x ~/node-monitor/bin/ec2-metadata
+		cd ~/node-monitor && npm link
 		
 		;;
 	'install-debian')
