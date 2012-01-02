@@ -19,7 +19,7 @@ Plugin.format = function (data, system) {
     case 'darwin':
         return Plugin.formatDarwin(data);
         break;
-    case 'linux2':
+    case 'linux':
         return Plugin.formatLinux2(data);
         break;
     default:
@@ -364,7 +364,7 @@ this.poll = function (constants, utilities, logger, callback) {
     case 'darwin':
         Plugin.command = 'top -l 1';
         break;
-    case 'linux2':
+    case 'linux':
         Plugin.command = 'top -b -n 1';
         break;
     default:

@@ -18,7 +18,7 @@ Plugin.format = function (data, system) {
     case 'darwin':
         Plugin.command = 'top -l 1 | awk \'/PhysMem/ {print $10}\'';
         break;
-    case 'linux2':
+    case 'linux':
         break;
     default:
         Plugin.logger.write(Plugin.constants.levels.WARNING, 'Unaccounted for system: ' + system);
@@ -43,7 +43,7 @@ this.poll = function (constants, utilities, logger, callback) {
     case 'darwin':
         Plugin.command = 'top -l 1 | awk \'/PhysMem/ {print $10}\'';
         break;
-    case 'linux2':
+    case 'linux':
         Plugin.command = 'free -t -m | awk \'NR==5{print $4}\'';
         break;
     default:
