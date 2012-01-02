@@ -38,7 +38,7 @@ UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
     });
 };
 
-UtilitiesManagerModule.prototype.autoPopulate = function () {
+UtilitiesManagerModule.prototype.autoPopulate = function (callback) {
     if (Module.constants.globals[Module.constants.strings.EC2] != Module.constants.strings.TRUE) { /* Default to localhost */
     	Module.constants.globals[Module.constants.strings.INSTANCE_ID] = 'none';
     	Module.constants.globals[Module.constants.strings.LOCAL_IPV4] = '127.0.0.1';
@@ -58,6 +58,7 @@ UtilitiesManagerModule.prototype.autoPopulate = function () {
                 Module.constants.globals[parameter] = stdout;
             }
         });
+        callback();
     });
 };
 

@@ -21,7 +21,7 @@ Plugin.format = function (data, system) {
     case 'linux2':
         break;
     default:
-        Plugin.logger.write(Plugin.constants.levels.INFO, 'Unaccounted for system: ' + system);
+        Plugin.logger.write(Plugin.constants.levels.WARNING, 'Unaccounted for system: ' + system);
         break;
     }
 
@@ -47,7 +47,7 @@ this.poll = function (constants, utilities, logger, callback) {
         Plugin.command = 'free -t -m | awk \'NR==5{print $4}\'';
         break;
     default:
-        self.logger.write(Plugin.constants.levels.INFO, 'Unaccounted for system: ' + system);
+        self.logger.write(self.constants.levels.WARNING, 'Unaccounted for system: ' + system);
         return;
         break;
     }
