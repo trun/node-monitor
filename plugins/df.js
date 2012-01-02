@@ -1,83 +1,54 @@
+/* df.js */
 /**
- * Plugin - df
+ * A plugin for monitoring disk size in %.
  */
+var fs = require('fs');
 
-// Includes
-var stack = require('../lib/long-stack-traces');
-
-// Utilities
-var utilsModule = require('../modules/utils');
-var utils = new utilsModule.UtilsModule();
-
-// Constants
-var constantsModule = require('../modules/constants');
-var constants = new constantsModule.ConstantsModule();
-
-// Logging
-var logger = require('../modules/logger');
-
-// Cloudwatch
-var REST = require('../modules/node-cloudwatch');
-var client = new REST.AmazonCloudwatchClient();
- 
 var Plugin = {
-
-	name: 'df',
-	command: '',
-	config: require('../config/config')
-	
+    name: 'df',
+    command: '',
+    type: 'poll'
 };
 
 this.name = Plugin.name;
+this.type = Plugin.type;
 
-Plugin.format = function(data) {
-
-	output_hash = {
-		date: new Date().getTime(),
-		value: data.replace('%', '')
-	};
-	return JSON.stringify(output_hash);
-	
+Plugin.format = function (diskToCheck, data) {
+    data = data.replace(/(\r\n|\n|\r)/gm, '');
+    data = data.replace('%', '');
+    data = {
+        disk: diskToCheck,
+        size: data
+    };
+    return JSON.stringify(data);
 };
 
-Plugin.cloudwatchCriteria = function(response) {
-	
-	params = {};
-	
-	params['Namespace'] = Plugin.config.cloudwatchNamespace;
-	params['MetricData.member.1.MetricName'] = 'DiskSpace';
-	params['MetricData.member.1.Unit'] = 'Percent';
-	params['MetricData.member.1.Value'] = response.replace('%', '');
-	params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-	params['MetricData.member.1.Dimensions.member.1.Value'] = Plugin.config.instanceId;
-	
-	if (Plugin.config.cloudwatchEnabled) {
-		client.request('PutMetricData', params, function (response) {
-			logger.write(constants.levels.INFO, 'Amazon Response: ' + response);
-		});
-	}
-	
-	// logger.write(constants.levels.SEVERE, JSON.stringify(params));
-	
-};
-	
-this.poll = function (callback) {
-	
-	Plugin.command = 'df -h | grep \'/dev/' + Plugin.config.drive + '\' | awk \'{print $5}\'';
+this.poll = function (constants, utilities, logger, callback) {
+    var self = this;
+    self.constants = constants;
+    self.utilities = utilities;
+    self.logger = logger;
 
-	logger.write(constants.levels.INFO, 'Plugin command to run: ' + Plugin.command);
+    var disks = [];
+    fs.readFile(self.name + '_config', function (error, fd) {
+        if (error) self.utilities.exit('Error reading ' + self.name + ' plugin config file');
 
-	var exec = require('child_process').exec, child;
-	child = exec(Plugin.command, function (error, stdout, stderr) {		
-		
-		var key = utils.formatPluginKey(Plugin.config.clientIP, Plugin.name);
-		var data = Plugin.format(stdout.toString());
-		
-		logger.write(constants.levels.INFO, Plugin.name + ' Data: ' + data);
-		
-		Plugin.cloudwatchCriteria(stdout.toString());
-		
-		callback(Plugin.name, key, data);
-	});
-	
+        var splitBuffer = [];
+        splitBuffer = fd.toString().split('\n');
+        for (var i = 0; i < splitBuffer.length; i++) {
+            var disk = splitBuffer[i];
+            self.logger.write(self.constants.levels.INFO, 'Disk to check: ' + disk);
+            if (disk != '' && disk != 'none' && disk != 'undefined') disks.push(disk);
+
+        }
+
+        disks.forEach(function (diskToCheck) {
+            Plugin.command = 'df -h | grep -v grep | grep \'' + diskToCheck + '\' | awk \'{print $5}\'';
+            var exec = require('child_process').exec,
+                child;
+            child = exec(Plugin.command, function (error, stdout, stderr) {
+                callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()));
+            });
+        });
+    });
 };

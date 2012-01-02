@@ -1,7 +1,0 @@
-function listMetrics() {
-
-}
-
-function listAlarms() {
-
-}

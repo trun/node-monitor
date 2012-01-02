@@ -1,0 +1,30 @@
+{
+	"name": "node-monitor",
+	"version": "0.6.0",
+	"description": "Amazon CloudWatch environment monitor",
+	"keywords": ["amazon", "cloudwatch", "client", "node", "monitor"],
+	"repository": "git://github.com/franklovecchio/node-cloudwatch.git",
+	"author": "Frank LoVecchio <frank@m2m.io> (http://franklovecchio.com)",
+	"dependencies": {
+		"http": "",
+		"querystring": "",
+		"xml2json": "",
+		"crypto": "",
+		"step": "",
+		"nodeunit": "",
+		"async": "",
+		"node-cloudwatch": "",
+		"long-stack-traces": "",
+		"github": "",
+		"forever": "",
+		"iconv": "",
+		"ec2": ""
+	},
+	"main": "run/client.js",
+	"license": {
+		"type": "Hack the planet"
+	},
+	"engines": { 
+		"node": ">= 0.4.6 < 0.5.0" 
+	}
+}

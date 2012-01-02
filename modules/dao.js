@@ -1,144 +1,74 @@
-/**
-* DAO Module
-*/
+/* dao.js */
+var fs = require('fs'),
+    Module = {},
+    location = 'dao.js';
 
-// Includes
-var stack = require('../lib/long-stack-traces');
- 
-// Utilities
-var utilsModule = require('./utils');
-var utils = new utilsModule.UtilsModule();
-
-// Global Constants
-var constantsModule = require('./constants');
-var constants = new constantsModule.ConstantsModule();
-
-// CloudSandra
-var api = require('../modules/node-cloudsandra');
-var CloudsandraApi = new api.CloudsandraApi();
-
-DAOModule = function() {
-
+/* Path to dependencies from file */
+var modules = {
+    cloudwatch: '../libs/node-cloudwatch'
 };
 
-DAOModule.prototype.storeSelf = function(type, internalIP, externalIP) {
-	var date = new Date();
+DaoManagerModule = function (constants, utilities, logger, dao) {
+    Module = this;
+    Module.constants = constants;
+    Module.utilities = utilities;
+    Module.logger = logger;
+    Module.dao = dao;
 
-	var postParams1 = {};
-	postParams1[internalIP] = date.getTime();
-	
-	CloudsandraApi.postData(constants.values.CFUTF8Type, type, postParams1, null, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
-	
-	var postParams2 = {};
-	postParams2[internalIP] = externalIP;
-	
-	CloudsandraApi.postData(constants.values.CFUTF8Type, constants.api.CLIENT_EXTERNAL, postParams2, null, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
+    /* Setup dependencies */
+    for (var name in modules) {
+        console.log('Evaluating dependency in location: ' + location + ', with name: ' + name + ', path:' + modules[name]);
+        eval('var ' + name + ' = require(\'' + modules[name] + '\')');
+    }
+
+    var CloudwatchApi = new cloudwatch.AmazonCloudwatchClient();
+    Module.cloudwatchApi = CloudwatchApi;
 };
 
-DAOModule.prototype.createColumnFamily = function(cfName, cfType) {
-	CloudsandraApi.createColumnFamily(cfName, cfType, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
+DaoManagerModule.prototype.debugMode = function () {
+    if (Module.constants.globals['debug'] == 'true') return true;
+
+    return false;
 };
 
-DAOModule.prototype.postDataUTF8Type = function(key, postParams) {	
-	CloudsandraApi.postData(constants.values.CFUTF8Type, utils.safeEncodeKey(key), postParams, null, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
+DaoManagerModule.prototype.write = function (pluginName, jsonString) {
+    if (Module.utilities.validateData(jsonString)) return true;
+
+    Module.logger.write(Module.constants.levels.WARNING, 'Data is not valid JSON');
+    return false;
 };
 
-DAOModule.prototype.postDataLongType = function(key, postParams) {	
-	CloudsandraApi.postData(constants.values.CFLongType, utils.safeEncodeKey(key), postParams, null, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
+DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) { /* If we're in debug mode, don't post */
+    if (this.debugMode()) return;
+
+    /* If we're not on EC2, don't post */
+    if (Module.constants.globals[Module.constants.strings.EC2] != Module.constants.strings.TRUE) return;
+
+    var params = {};
+
+    params['Namespace'] = process.env['cloudwatchNamespace'];
+    params['MetricData.member.1.MetricName'] = metricName;
+    params['MetricData.member.1.Unit'] = unit;
+    params['MetricData.member.1.Value'] = value;
+    params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
+    params['MetricData.member.1.Dimensions.member.1.Value'] = Module.constants.globals[Module.constants.strings.INSTANCE_ID];
+
+    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch IP: ' + Module.constants.globals[Module.constants.strings.INSTANCE_ID]);
+    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch MetricName: ' + metricName);
+    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch Unit: ' + unit);
+    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch Value: ' + value);
+
+    /* If we specified a parameter to enable, then we post */
+    if (process.env[Module.constants.strings.CLOUDWATCH_ENABLED] == Module.constants.strings.TRUE) {
+        try {
+            Module.cloudwatchApi.request('PutMetricData', params, function (
+            response) {});
+        } catch (Exception) {
+            Module.logger.write(Module.constants.levels.SEVERE, 'Error POSTing data to CloudWatch: ' + Exception);
+        }
+    }
+
+    return params;
 };
 
-DAOModule.prototype.deleteUTF8Type = function(key, column) {
-	CloudsandraApi.deleteDataFromRow(constants.values.CFUTF8Type, utils.safeEncodeKey(key), column, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
-};
-
-DAOModule.prototype.getRow = function(cfName, key, callback) {
-	CloudsandraApi.getRow(cfName, utils.safeEncodeKey(key), function(response) {
-		callback(response);
-	});
-};
-
-DAOModule.prototype.paginateRow = function(cfName, key, fromKey, limit, callback) {
-	CloudsandraApi.paginateRow(cfName, utils.safeEncodeKey(key), fromKey, limit, function(response) {
-		callback(response);
-	});
-};
-
-DAOModule.prototype.incrementCount = function(key, cName, value) {
-	CloudsandraApi.incrementCount(key, cName, value, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
-};
-
-DAOModule.prototype.decrementCount = function(key, cName, value) {
-	CloudsandraApi.decrementCount(key, cName, value, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
-};
-
-DAOModule.prototype.mapReduceTable = function(key, postParams) {
-	CloudsandraApi.mapReduceTable(key, postParams, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
-};
-
-DAOModule.prototype.mapReduceJob = function(postParams) {
-	CloudsandraApi.mapReduceTable(jsonObject.data, postParams, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
-};
-
-DAOModule.prototype.bulkPost = function(cfName, bulkLoadRequest) {
-	CloudsandraApi.postBulkData(cfName, JSON.stringify(bulkLoadRequest), function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});	
-};
-
-DAOModule.prototype.deleteDataFromRow = function(cfName, rowKey, cName) {
-	CloudsandraApi.deleteDataFromRow(cfName, rowKey, cName, function(response) {
-		CloudsandraApi.parseForDisplay(response);
-	});
-};
-
-DAOModule.prototype.handleDataStorage = function(assertObject) {
-	// UTF8Type Column Family
-	var postParamsNormalized = {};
-	postParamsNormalized[assertObject.message] = utils.generateFormattedDate();
-		
-	// UTF8Type Column Family
-	var postParams1 = {};
-	postParams1[assertObject.origin] = utils.generateFormattedDate();
-		 
-	// LongType Column Family for date sorting
-	var postParams2 = {}
-	postParams2[assertObject.date] = escape(assertObject.message);
-		
-	this.postDataUTF8Type(constants.api.CLIENTS, postParams1);
-	
-	switch(assertObject.name) {
-		case constants.api.LOOKUP:
-
-			this.postDataUTF8Type(assertObject.key, postParamsNormalized);
-			
-			break;
-		default:
-		
-			this.postDataLongType(assertObject.key, postParams2);
-			this.incrementCount(utils.safeEncodeKey(assertObject.key), assertObject.name, 1);
-			
-			break;
-	}		
-};
-
-exports.DAOModule = DAOModule;
+exports.DaoManagerModule = DaoManagerModule;

@@ -1,81 +1,61 @@
+/* free.js */
 /**
- * Plugin - free
+ * A plugin for monitoring free space in MB.
  */
+var fs = require('fs');
 
-// Includes
-var stack = require('../lib/long-stack-traces');
-
-// Utilities
-var utilsModule = require('../modules/utils');
-var utils = new utilsModule.UtilsModule();
-
-// Constants
-var constantsModule = require('../modules/constants');
-var constants = new constantsModule.ConstantsModule();
-
-// Logging
-var logger = require('../modules/logger');
-
-// Cloudwatch
-var REST = require('../modules/node-cloudwatch');
-var client = new REST.AmazonCloudwatchClient();
- 
 var Plugin = {
-
-	name: 'free',
-	command: 'free -t -m | awk \'NR==5{print $4}\'',
-	config: require('../config/config')
-	
+    name: 'free',
+    command: '',
+    type: 'poll'
 };
 
 this.name = Plugin.name;
+this.type = Plugin.type;
 
-Plugin.format = function(data) {
+Plugin.format = function (data, system) {
+    switch (system) {
+    case 'darwin':
+        Plugin.command = 'top -l 1 | awk \'/PhysMem/ {print $10}\'';
+        break;
+    case 'linux2':
+        break;
+    default:
+        Plugin.logger.write(Plugin.constants.levels.INFO, 'Unaccounted for system: ' + system);
+        break;
+    }
 
-	output_hash = {
-		date: new Date().getTime(),
-		value: data.replace('%', '')
-	};
-	return JSON.stringify(output_hash);
-	
+    data = data.replace(/(\r\n|\n|\r)/gm, '');
+    data = data.replace('M', '');
+    return data;
 };
 
-Plugin.cloudwatchCriteria = function(response) {
-	
-	params = {};
-	
-	params['Namespace'] = Plugin.config.cloudwatchNamespace;
-	params['MetricData.member.1.MetricName'] = 'MemoryFree';
-	params['MetricData.member.1.Unit'] = 'Megabytes';
-	params['MetricData.member.1.Value'] = response;
-	params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-	params['MetricData.member.1.Dimensions.member.1.Value'] = Plugin.config.instanceId;
-	
-	if (Plugin.config.cloudwatchEnabled) {
-		client.request('PutMetricData', params, function (response) {
-			logger.write(constants.levels.INFO, 'Amazon Response: ' + response);
-		});
-	}
-	
-	// logger.write(constants.levels.SEVERE, JSON.stringify(params));
-	
-};
-	
-this.poll = function (callback) {
-	
-	logger.write(constants.levels.INFO, 'Plugin command to run: ' + Plugin.command);
+this.poll = function (constants, utilities, logger, callback) {
+    self = this;
+    self.constants = constants;
+    self.utilities = utilities;
+    self.logger = logger;
 
-	var exec = require('child_process').exec, child;
-	child = exec(Plugin.command, function (error, stdout, stderr) {		
-		
-		var key = utils.formatPluginKey(Plugin.config.clientIP, Plugin.name);
-		var data = Plugin.format(stdout.toString());
-		
-		logger.write(constants.levels.INFO, Plugin.name + ' Data: ' + data);
-		
-		Plugin.cloudwatchCriteria(stdout.toString());
-		
-		callback(Plugin.name, key, data);
-	});
-	
+    /* Operating system differentiation */
+    var system = self.utilities.getSystemEnvironment();
+
+    switch (system) {
+    case 'darwin':
+        Plugin.command = 'top -l 1 | awk \'/PhysMem/ {print $10}\'';
+        break;
+    case 'linux2':
+        Plugin.command = 'free -t -m | awk \'NR==5{print $4}\'';
+        break;
+    default:
+        self.logger.write(Plugin.constants.levels.INFO, 'Unaccounted for system: ' + system);
+        return;
+        break;
+    }
+
+    var exec = require('child_process').exec,
+        child;
+    child = exec(Plugin.command, function (error, stdout, stderr) {
+        callback(Plugin.name, 'MemoryFree', 'Megabytes', Plugin.format(
+        stdout.toString(), system), Plugin.format(stdout.toString(), system));
+    });
 };
