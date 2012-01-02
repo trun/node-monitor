@@ -11,8 +11,7 @@ UtilitiesManagerModule.prototype.parseCommandLineOptions = function (callback) {
     var count = 0;
     process.argv.forEach(function (value, index, array) {
         if (count != 0 && count != 1) {
-            Module.constants.globals[value.split('=')[0]] = value.split('=')[1]; 
-            /* Debug */
+            Module.constants.globals[value.split('=')[0]] = value.split('=')[1]; /* Debug */
             console.log('Read cmd parameter: ' + value.split('=')[0] + ', with value: ' + value.split('=')[1]);
         }
         count++;
@@ -31,8 +30,7 @@ UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
         for (var i = 0; i < splitBuffer.length; i++) {
             var params = splitBuffer[i].split('=');
             if (params[0] != undefined && params[0] != '') {
-                Module.constants.globals[params[0]] = params[1]; 
-                /* Debug */
+                Module.constants.globals[params[0]] = params[1]; /* Debug */
                 console.log('Read config parameter: ' + params[0] + ', with value: ' + params[1]);
             }
         }
@@ -41,6 +39,13 @@ UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
 };
 
 UtilitiesManagerModule.prototype.autoPopulate = function () {
+    if (constants.globals[constants.strings.EC2] != constants.strings.TRUE) { /* Default to localhost */
+        constants.globals[constants.strings.INSTANCE_ID] = 'none';
+        constants.globals[constants.strings.LOCAL_IPV4] = '127.0.0.1';
+        constants.globals[constants.strings.PUBLIC_HOSTNAME] = '127.0.0.1';
+        return;
+    }
+
     [Module.constants.strings.INSTANCE_ID, Module.constants.strings.LOCAL_IPV4, Module.constants.strings.PUBLIC_HOSTNAME].forEach(function (
     parameter) {
         require('child_process').exec(
@@ -48,8 +53,7 @@ UtilitiesManagerModule.prototype.autoPopulate = function () {
             if (error) {
                 console.log('Error auto-configuring: ' + error + ', exiting application');
                 process.exit(1);
-            } else { 
-                /* Debug */
+            } else { /* Debug */
                 console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout);
                 Module.constants.globals[parameter] = stdout;
             }

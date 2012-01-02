@@ -51,27 +51,17 @@ function NodeMonitor() {
 
         /* Parse configuration */
         utilities.parseConfig(
-        constants.strings.MONITOR_CONFIG_FILE, function () { 
-        	/* Parse command line options */
-            utilities.parseCommandLineOptions(function () {
-                if (constants.globals[constants.strings.EC2] == constants.strings.TRUE) { 
-                	/* Use EC2-metadata script */
-                    utilities.autoPopulate();
-                } else { 
-                	/* Default to localhost */
-                    constants.globals[constants.strings.INSTANCE_ID] = 'none';
-                    constants.globals[constants.strings.LOCAL_IPV4] = '127.0.0.1';
-                    constants.globals[constants.strings.PUBLIC_HOSTNAME] = '127.0.0.1';
-                }
+        constants.strings.MONITOR_CONFIG_FILE, function () { /* Parse command line options */
+            utilities.parseCommandLineOptions(function () { /* Auto-populate object based on EC2, if true, use EC2-metadata script */
+                utilities.autoPopulate(function () { /* Set default IP */
+                    console.log('DEBUG IPV4: ' + constants.globals[constants.strings.LOCAL_IPV4]);
+                    console.log('DEBUG IP: ' + constants.globals[constants.strings.IP]);
+                    constants.globals[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
 
-                /* Set default IP */
-                console.log('DEBUG IPV4: ' + constants.globals[constants.strings.LOCAL_IPV4]);
-                console.log('DEBUG IP: ' + constants.globals[constants.strings.IP]);
-                constants.globals[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
-
-                /* Validate credentials */
-                credentials.check();
-                callback();
+                    /* Validate credentials */
+                    credentials.check();
+                    callback();
+                });
             });
         });
     };
@@ -82,5 +72,5 @@ nodeMonitor.init(function () { /* Debug */
     for (var i in nodeMonitor.constants.globals) {
         console.log('Global parameter: ' + i + ', with value: ' + nodeMonitor.constants.globals[i]);
     }
-    nodeMonitor.plugins.start(); 
+    nodeMonitor.plugins.start();
 });
