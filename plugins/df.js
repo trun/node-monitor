@@ -38,7 +38,8 @@ this.poll = function (constants, utilities, logger, callback) {
         for (var i = 0; i < splitBuffer.length; i++) {
             var disk = splitBuffer[i];
             self.logger.write(self.constants.levels.INFO, 'Disk to check: ' + disk);
-            if (disk != '' && disk != 'none' && disk != 'undefined') disks.push(disk);
+            if (!utilities.isEmpty(disk))
+            		disks.push(disk);
 
         }
 
@@ -47,7 +48,10 @@ this.poll = function (constants, utilities, logger, callback) {
             var exec = require('child_process').exec,
                 child;
             child = exec(Plugin.command, function (error, stdout, stderr) {
-                callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()));
+            	/* Misconfigured disk */
+            	if (!utilities.isEmpty(stdout.toString().replace('%', '')))
+            		callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()));
+            	
             });
         });
     });

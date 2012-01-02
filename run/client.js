@@ -72,5 +72,6 @@ nodeMonitor.init(function () { /* Debug */
     for (var i in nodeMonitor.constants.globals) {
         console.log('Global parameter: ' + i + ', with value: ' + nodeMonitor.constants.globals[i]);
     }
+    console.log('Running on platform: ' + process.platform.toString());
     nodeMonitor.plugins.start();
 });
