@@ -44,10 +44,11 @@ UtilitiesManagerModule.prototype.autoPopulate = function () {
         require('child_process').exec(
         Module.constants.strings.EC2_METADATA_SCRIPT + ' --' + parameter, function (error, stdout, stderr) {
             if (error) {
-                console.log('Error auto-configuring, exiting');
+                console.log('Error auto-configuring, exiting ' + error);
                 process.exit(1);
             } else {
-                Module.constants.globals[parameter] = stdout; /* Debug */
+                Module.constants.globals[parameter] = stdout; 
+                /* Debug */
                 console.log('Read parameter: ' + parameter + ', with value: ' + stdout);
             }
         });
