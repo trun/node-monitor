@@ -13,18 +13,18 @@
 		"step": "",
 		"nodeunit": "",
 		"async": "",
-		"node-cloudwatch": "",
 		"long-stack-traces": "",
 		"github": "",
 		"forever": "",
 		"iconv": "",
-		"ec2": ""
+		"ec2": "",
+	    "zmq": ""
 	},
 	"main": "run/client.js",
 	"license": {
 		"type": "Hack the planet"
 	},
 	"engines": { 
-		"node": ">= 0.4.6 < 0.5.0" 
+		"node": ">= 0.4.8 < 0.5.0" 
 	}
 }

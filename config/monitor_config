@@ -6,5 +6,3 @@ module_directory=../modules
 submodule_directory=../submodules
 daemon_lock=/tmp/nodemonitor_server.lock
 cloudwatch_namespace=M2MIO Instance Metrics
-AWS_ACCESS_KEY_ID=MYKEY
-AWS_SECRET_ACCESS_KEY=MYSECRET

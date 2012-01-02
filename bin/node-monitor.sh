@@ -7,6 +7,9 @@ case "$1" in
 		echo "Starting node-monitor"
 
 		cd ~/node-monitor/run
+		
+		export AWS_ACCESS_KEY_ID=ID;
+		export AWS_SECRET_ACCESS_KEY=KEY;
 	
 		#node client.js > /dev/null 2>&1 &
 		node client.js ec2=true debug=false console=false cloudwatch=true
@@ -25,29 +28,29 @@ case "$1" in
 		;;
 	'update')
 		echo "Updating node-monitor"
-		
 		cd ~/
-		mkdir ~/.node-monitor
+		rm ~/.node-monitor/*
 		cp ~/node-monitor/plugins/*_config ~/.node-monitor/
 		rm -r ~/node-monitor
-		cd  ~/node-monitor
 		git clone $GIT_PROJECT
-		cp ~/.node-monitor/* /node-monitor/plugins/
+		cp ~/.node-monitor/* ~/node-monitor/plugins/
 		cd ~/node-monitor/bin
-		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata -r
-		chmod a+x ec2-metadata
+		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
+		chmod a+x ~/node-monitor/ec2-metadata
 		
 		;;
 	'install-debian-with-deps')
-		yes | apt-get install git-core scons curl build-essential openssl libssl-dev python3.2
+	    yes | apt-get update 
+	    apt-get -y install libssl-dev git-core scons pkg-config build-essential curl gcc g++ python3.2
 		cd ~/
-		git clone https://github.com/joyent/node.git && cd ~/node
-		git checkout v0.4.8
-		./configure --without-ssl
+		wget https://github.com/joyent/node/zipball/v0.6.6 && tar -xzf v0.6.6
+		cd ~/joyent-node-19a9663
+		./configure
 		make
 		make install
-		cd ~/node
+		export PATH=$PATH:/opt/node/bin
 		curl http://npmjs.org/install.sh | sudo sh
+		mkdir ~/.node-monitor
 		cd ~/node-monitor
 		npm link
 
@@ -63,7 +66,7 @@ case "$1" in
 		cd /monitoring
 		git clone https://github.com/joyent/node.git && cd /monitoring/node
 		git checkout v0.4.8
-		./configure --without-ssl
+		./configure
 		make
 		make install
 		cd /monitoring
