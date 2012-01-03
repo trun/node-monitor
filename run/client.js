@@ -56,7 +56,11 @@ function NodeMonitor() {
             utilities.parseCommandLineOptions(function () { 
             	/* Validate credentials */
                 credentials.check(function () { 
-                	callback();
+                	 utilities.getInternalIP(function (ip) {
+                		 logger.write(constants.levels.INFO, 'IP: ' + ip);
+                	        process.env[Module.constants.strings.IP] = ip;
+                	        callback();
+                	 });
                 });
             });
         });

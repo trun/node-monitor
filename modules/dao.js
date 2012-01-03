@@ -14,11 +14,6 @@ DaoManagerModule = function (constants, utilities, logger, dao) {
     Module.logger = logger;
     Module.dao = dao;
 
-    Module.utilities.getInternalIP(function (ip) {
-        Module.logger.write(Module.constants.levels.INFO, 'IP: ' + ip);
-        process.env[Module.constants.strings.IP] = ip;
-    });
-
     /* Setup dependencies */
     for (var name in modules) {
         eval('var ' + name + ' = require(\'' + modules[name] + '\')');

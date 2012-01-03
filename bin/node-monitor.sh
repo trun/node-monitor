@@ -9,7 +9,7 @@ case "$1" in
 		cd ~/node-monitor/run
 	
 		#node client.js > /dev/null 2>&1 &
-		node client.js ec2=true debug=false console=false cloudwatch=true
+		node client.js ec2=true debug=false console=false cloudwatch=true &
 		
 		;;
 	'stop')

@@ -50,6 +50,7 @@ UtilitiesManagerModule.prototype.getInstanceId = function (callback) {
                 } else { /* Debug */
                     /* console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout); */
                     callback(stdout);
+                    return;
                 }
             });
         });
@@ -69,6 +70,7 @@ UtilitiesManagerModule.prototype.getPublicHostname = function (callback) {
                 } else { /* Debug */
                     /* console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout); */
                     callback(stdout);
+                    return;
                 }
             });
         });
@@ -88,6 +90,7 @@ UtilitiesManagerModule.prototype.getInternalIP = function (callback) {
                 } else { /* Debug */
                     /* console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout); */
                     callback(stdout);
+                    return;
                 }
             });
         });
