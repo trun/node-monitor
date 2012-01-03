@@ -18,6 +18,10 @@ CredentialManagerModule.prototype.check = function () {
             Module.utilities.exit(credential + ' credential is not declared');
         
     });
+    
+    /* For node-cloudwatch */
+    process.env[Module.constants.strings.AWS_SECRET_ACCESS_KEY] = Module.constants.globals[Module.constants.strings.AWS_SECRET_ACCESS_KEY];
+    process.env[Module.constants.strings.AWS_ACCESS_KEY_ID] = Module.constants.globals[Module.constants.strings.AWS_ACCESS_KEY_ID];
 };
 
 exports.CredentialManagerModule = CredentialManagerModule;
