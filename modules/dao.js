@@ -56,17 +56,18 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
     params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
     params['MetricData.member.1.Dimensions.member.1.Value'] = Module.constants.globals[Module.constants.strings.IP];
 
-    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch Namespace: ' + Module.constants.globals[Module.constants.strings.CLOUDWATCH_NAMESPACE]);
-    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch IP: ' + Module.constants.globals[Module.constants.strings.IP]);
-    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch MetricName: ' + metricName);
-    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch Unit: ' + unit);
-    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch Value: ' + value);
+    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Namespace: ' + Module.constants.globals[Module.constants.strings.CLOUDWATCH_NAMESPACE]);
+    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch IP: ' + Module.constants.globals[Module.constants.strings.IP]);
+    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch MetricName: ' + metricName);
+    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Unit: ' + unit);
+    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Value: ' + value);
 
     /* If we specified a parameter to enable, then we post */
     if (Module.constants.globals[Module.constants.strings.CLOUDWATCH_ENABLED] == Module.constants.strings.TRUE) {
         try {
-            Module.cloudwatchApi.request('PutMetricData', params, function (
-            response) {});
+            Module.cloudwatchApi.request('PutMetricData', params, function (response) {
+            	 Module.logger.write(Module.constants.levels.INFO, 'CloudWatch response: ' + response.toString());
+            });
         } catch (Exception) {
             Module.logger.write(Module.constants.levels.SEVERE, 'Error POSTing data to CloudWatch: ' + Exception);
         }

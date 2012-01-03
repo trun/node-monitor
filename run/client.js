@@ -20,7 +20,8 @@ var modules = {
 };
 
 for (var name in modules) {
-    console.log('Evaluating dependency in location: ' + location + ', with name: ' + name + ', path:' + modules[name]);
+	/* Debug */
+    /* console.log('Evaluating dependency in location: ' + location + ', with name: ' + name + ', path:' + modules[name]); */
     eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 }
 
