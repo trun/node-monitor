@@ -12,6 +12,9 @@ PluginsManagerModule = function (constants, utilities, logger, dao) {
 };
 
 PluginsManagerModule.prototype.start = function () { 
+	
+	Module.logger.write(Module.constants.levels.INFO, 'Evaluating plugins');
+	
 	/* Switch to plugins directory */
     try {
         process.chdir(Module.constants.strings.PLUGIN_DIRECTORY);
@@ -51,12 +54,10 @@ PluginsManagerModule.prototype.executePlugins = function () {
             Module.constants, Module.utilities, Module.logger, function (
             pluginName, metricName, unit, value, data) {
                 Module.logger.write(Module.constants.levels.INFO, 'Returning metrics for plugin: ' + pluginName);
-                Module.logger.write(Module.constants.levels.INFO, 'MetricName: ' + metricName);
-                Module.logger.write(Module.constants.levels.INFO, 'Unit: ' + unit);
-                Module.logger.write(Module.constants.levels.INFO, 'Value: ' + value);
-                Module.logger.write(Module.constants.levels.INFO, 'Data: ' + data); /* Post to CloudWatch */
-                Module.dao.postCloudwatch(metricName, unit, value); /* Store */
-                Module.dao.write(pluginName, data);
+                /* Post to CloudWatch */
+                Module.dao.postCloudwatch(metricName, unit, value); 
+                /* Store JSON */
+                // Module.dao.write(pluginName, data);
             });
         } /* Duration between poll times */
     }, Number(Module.constants.globals[Module.constants.strings.PLUGIN_POLL_TIME]) * 1000);

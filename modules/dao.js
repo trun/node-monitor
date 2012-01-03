@@ -63,6 +63,7 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Value: ' + value);
 
     /* If we specified a parameter to enable, then we post */
+    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch? ' + Module.constants.globals[Module.constants.strings.CLOUDWATCH_ENABLED]);
     if (Module.constants.globals[Module.constants.strings.CLOUDWATCH_ENABLED] == Module.constants.strings.TRUE) {
         try {
             Module.cloudwatchApi.request('PutMetricData', params, function (response) {
