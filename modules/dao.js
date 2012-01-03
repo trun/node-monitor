@@ -1,5 +1,4 @@
 /* dao.js */
-
 var fs = require('fs'),
     Module = {},
     location = 'dao.js';
@@ -52,6 +51,14 @@ DaoManagerModule.prototype.write = function (pluginName, jsonString) {
     return false;
 };
 
+DaoManagerModule.prototype.asciiConvert = function (string) {
+    var res = '';
+    for (var i = 0; i < string.length; i++) {
+        res += string.charCodeAt(i) + ',';
+    }
+    return res.substr(0, res.length - 1);
+};
+
 DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) { /* If we're in debug mode, don't post */
     if (this.debugMode()) return;
 
@@ -65,10 +72,10 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
     params['MetricData.member.1.Unit'] = unit;
     params['MetricData.member.1.Value'] = value;
     params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-    params['MetricData.member.1.Dimensions.member.1.Value'] = process.env[Module.constants.strings.INSTANCE_ID];
+    params['MetricData.member.1.Dimensions.member.1.Value'] = this.asciiConvert(process.env[Module.constants.strings.INSTANCE_ID]);
 
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Namespace: ' + process.env[Module.constants.strings.CLOUDWATCH_NAMESPACE]);
-    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch IP: ' + process.env[Module.constants.strings.INSTANCE_ID]);
+    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch IP: ' + process.env[Module.constants.strings.INSTANCE_ID] + ', ascii: ' + this.asciiConvert(process.env[Module.constants.strings.INSTANCE_ID]));
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch MetricName: ' + metricName);
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Unit: ' + unit);
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Value: ' + value);
