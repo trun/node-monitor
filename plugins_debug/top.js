@@ -32,16 +32,6 @@ Plugin.format = function (data, system) {
 Plugin.formatLinux = function (data) {
     var splitBuffer = [];
     splitBuffer = data.split('\n');
-    /*
-     * top - 22:32:04 up 103 days, 2:52, 1 user, load average: 0.40, 0.57, 0.28
-     * Tasks: 82 total, 1 running, 81 sleeping, 0 stopped, 0 zombie Cpu(s):
-     * 2.3%us, 1.2%sy, 0.0%ni, 92.1%id, 0.2%wa, 0.0%hi, 0.0%si, 4.1%st Mem:
-     * 1705708k total, 1304804k used, 400904k free, 57052k buffers Swap: 917500k
-     * total, 6088k used, 911412k free, 1008452k cached
-     */
-    
-    var splitBuffer = [];
-    splitBuffer = data.split('\n');
 
     var processes = {
         total: '',
