@@ -60,7 +60,7 @@ PluginsManagerModule.prototype.executePlugins = function () {
                 // Module.dao.write(pluginName, data);
             });
         } /* Duration between poll times */
-    }, Number(Module.constants.globals[Module.constants.strings.PLUGIN_POLL_TIME]) * 1000);
+    }, Number(process.env[Module.constants.strings.PLUGIN_POLL_TIME]) * 1000);
 };
 
 exports.PluginsManagerModule = PluginsManagerModule;

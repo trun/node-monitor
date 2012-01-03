@@ -47,9 +47,6 @@ function NodeMonitor() {
         this.dao = dao;
         this.plugins = plugins;
 
-        /* Use object to store config options */
-        constants.globals = {};
-
         /* Parse configuration */
         utilities.parseConfig(constants.strings.MONITOR_CONFIG_FILE, function () { 
         	/* Parse command line options */
@@ -69,12 +66,5 @@ function NodeMonitor() {
 
 var nodeMonitor = new NodeMonitor();
 nodeMonitor.init(function () { 
-	/* Debug */
-	/*
-    for (var i in nodeMonitor.constants.globals) {
-        console.log('Global parameter: ' + i + ', with value: ' + nodeMonitor.constants.globals[i]);
-    }
-    console.log('Running on platform: ' + process.platform.toString());
-    */
     nodeMonitor.plugins.start();
 });

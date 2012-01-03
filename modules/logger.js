@@ -14,11 +14,11 @@ LoggingManagerModule.prototype.write = function (level, message) { /* Create mes
     message = date + ' ' + level + ' ' + message + '\n';
 
     /* Log to console if specified */
-    if (Module.constants.globals[Module.constants.strings.CONSOLE] == Module.constants.strings.TRUE) console.log(message);
+    if (process.env[Module.constants.strings.CONSOLE] == Module.constants.strings.TRUE) console.log(message);
 
     /* Create log object to store */
     var data = {
-        origin: Module.constants.globals[Module.constants.strings.IP],
+        origin: process.env[Module.constants.strings.IP],
         message: message
     };
 
