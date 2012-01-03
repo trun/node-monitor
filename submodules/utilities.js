@@ -49,7 +49,7 @@ UtilitiesManagerModule.prototype.getInstanceId = function (callback) {
                     process.exit(1);
                 } else { /* Debug */
                     /* console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout); */
-                    callback(stdout);
+                    callback(stdout.toString());
                     return;
                 }
             });
@@ -69,7 +69,7 @@ UtilitiesManagerModule.prototype.getPublicHostname = function (callback) {
                     process.exit(1);
                 } else { /* Debug */
                     /* console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout); */
-                    callback(stdout);
+                    callback(stdout.toString());
                     return;
                 }
             });
@@ -89,7 +89,7 @@ UtilitiesManagerModule.prototype.getInternalIP = function (callback) {
                     process.exit(1);
                 } else { /* Debug */
                     /* console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout); */
-                    callback(stdout);
+                    callback(stdout.toString());
                     return;
                 }
             });
