@@ -30,6 +30,6 @@ this.poll = function (constants, utilities, logger, callback) {
     var exec = require('child_process').exec,
         child;
     child = exec(Plugin.command, function (error, stdout, stderr) {
-        callback(Plugin.name, 'Uptime', 'Seconds', stdout.toString(), Plugin.format(stdout.toString()));
+        callback(Plugin.name, 'Uptime', 'Seconds', stdout.toString().replace(/^(\s*)((\S+\s*?)*)(\s*)$/,'$2'), Plugin.format(stdout.toString()));
     });
 };

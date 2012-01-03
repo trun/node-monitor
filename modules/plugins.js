@@ -11,7 +11,8 @@ PluginsManagerModule = function (constants, utilities, logger, dao) {
     Module.dao = dao;
 };
 
-PluginsManagerModule.prototype.start = function () { /* Switch to plugins directory */
+PluginsManagerModule.prototype.start = function () { 
+	/* Switch to plugins directory */
     try {
         process.chdir(Module.constants.strings.PLUGIN_DIRECTORY);
     } catch (Exception) {
