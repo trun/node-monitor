@@ -5,7 +5,7 @@
 var fs = require('fs');
 
 var Plugin = {
-    name: 'lsof',
+    name: 'uptime',
     command: 'cat /proc/uptime | awk \'{print$1}\'',
     type: 'poll'
 };
