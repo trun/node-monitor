@@ -17,7 +17,7 @@ UtilitiesManagerModule.prototype.parseCommandLineOptions = function (callback) {
         }
         count++;
     });
-    callback();
+    callback(Module.constants.globals);
 };
 
 UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
@@ -36,7 +36,7 @@ UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
                 /* console.log('Read config parameter: ' + params[0] + ', with value: ' + params[1]); */
             }
         }
-        callback();
+        callback(Module.constants.globals);
     });
 };
 
@@ -61,7 +61,7 @@ UtilitiesManagerModule.prototype.autoPopulate = function (callback) {
                 Module.constants.globals[parameter] = stdout;
             }
         });
-        callback();
+        callback(Module.constants.globals);
     });
 };
 
