@@ -50,6 +50,8 @@ To monitor disk size, you need to specify disks in the `df_config` file:
 
 * free.js
 
+* health.js
+
 * lsof.js
 
 * services.js
@@ -60,6 +62,8 @@ To monitor running services, you can specify a service name only for a `ps -ef` 
     redis=6379
 
 * top.js
+
+* uptime.js
 
 * who.js
 

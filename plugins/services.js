@@ -43,7 +43,8 @@ this.poll = function (constants, utilities, logger, callback) {
 
     var services = [];
     fs.readFile(self.name + '_config', function (error, fd) {
-        if (error) self.utilities.exit('Error reading ' + self.name + ' plugin config file');
+        if (error) 
+        	self.utilities.exit('Error reading ' + self.name + ' plugin config file');
 
         function Service(name, port) {
             this.name = name;
@@ -54,7 +55,7 @@ this.poll = function (constants, utilities, logger, callback) {
         splitBuffer = fd.toString().split('\n');
         for (i = 0; i < splitBuffer.length; i++) {
             var service = splitBuffer[i].split('=');
-            if (!self.utilities.isEmpty(service[1])) {
+            if (!self.utilities.isEmpty(service[0]) && !self.utilities.isEmpty(service[1])) {
                 self.logger.write(self.constants.levels.INFO, 'Checking for service ' + service[0] + ' on port: ' + service[1]);
                 services.push(new Service(service[0], Number(service[1])));
             } else {
