@@ -1,4 +1,4 @@
-plugin_poll_time=5
+plugin_poll_time=30
 cloudwatch_namespace=Namespace Instance Metrics
 AWS_ACCESS_KEY_ID=ID
 AWS_SECRET_ACCESS_KEY=KEY
