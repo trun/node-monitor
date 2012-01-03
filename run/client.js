@@ -54,10 +54,9 @@ function NodeMonitor() {
             	/* Validate credentials */
                 credentials.check(function () { 
                 	 utilities.getInternalIP(function (ip) {
-                		 logger.write(constants.levels.INFO, 'IP: ' + ip);
-                	        process.env[constants.strings.IP] = ip;
-                	        callback();
+                		 process.env[constants.strings.IP] = ip;
                 	 });
+                	 callback();
                 });
             });
         });
