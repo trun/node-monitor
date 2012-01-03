@@ -5,7 +5,7 @@ var fs = require('fs'),
 
 /* Path to dependencies from file */
 var modules = {
-    cloudwatch: '../libs/node-cloudwatch'
+    cloudwatch: 'node-cloudwatch'
 };
 
 DaoManagerModule = function (constants, utilities, logger, dao) {
@@ -15,11 +15,8 @@ DaoManagerModule = function (constants, utilities, logger, dao) {
     Module.logger = logger;
     Module.dao = dao;
 
-    /* Setup dependencies */
-    
+    /* Setup dependencies */ 
     for (var name in modules) {
-    	/* Debug */
-        /* console.log('Evaluating dependency in location: ' + location + ', with name: ' + name + ', path:' + modules[name]); */
         eval('var ' + name + ' = require(\'' + modules[name] + '\')');
     }
 
