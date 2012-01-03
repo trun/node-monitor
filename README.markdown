@@ -5,7 +5,7 @@ This is an EC2 monitoring application using node.js and the Amazon CloudWatch AP
 
 ### Prerequisites
 	
-Set ulimits HIGH (4000 at least)
+* Amazon EC2 account
 
 ### Setup
 
@@ -28,6 +28,12 @@ To do a light install:
  
     sudo ~/node-monitor.sh install-debian # Debian
 	sudo ~/node.monitor.sh install-centos # CentOS
+	
+Configure AWS credentials/CloudWatch namespace in config/monitor_config:
+
+    cloudwatch_namespace=<Namespace Instance Metrics>
+    AWS_ACCESS_KEY_ID=<ID>
+    AWS_SECRET_ACCESS_KEY=<Key>
 
 Start the monitor in production mode:
 	
