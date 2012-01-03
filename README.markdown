@@ -35,15 +35,29 @@ Start the monitor in production mode:
 	
 ### Plugins
 
-* df.sh
+* df.sh 
+
+To monitor disk size, you need to specify disks in the `df_config` file:
+
+     /dev/disk0s2
+     /dev/sdb
 
 * filesize.js
+
+ To monitor file sizes (like logs), and empty when they hit a maximum, you need to specify files and their max size (in KB) in the `filesize_config` file:
+ 
+     /Users/franklovecchio/Documents/my.log=1024
 
 * free.js
 
 * lsof.js
 
 * services.js
+
+To monitor running services, you can specify a service name only for a `ps -ef` command, or a service name and a port for an `lsof` command:
+
+    cassandra
+    redis=6379
 
 * top.js
 
