@@ -12,7 +12,6 @@
 		"step": "",
 		"nodeunit": "",
 		"async": "",
-		"http": ">=0.0.6",
 		"node-cloudwatch": "0.0.3",
 		"long-stack-traces": "",
 		"github": "",
