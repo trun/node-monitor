@@ -18,13 +18,8 @@ Copy the script out of the the directory into a usable location.
     
     cp ~/node-monitor/bin/node-monitor.sh ~/node-monitor.sh
     chmod a+x ~/node-monitor.sh
-    
-To install all the necessary packages (including node.js and npm):
-    
-	sudo ~/node-monitor.sh install-debian-with-deps # Debian
-	sudo ~/node.monitor.sh install-centos-with-deps # CentOS
 	
-To do a light install:
+To install all the necessary packages (including node.js and npm):
  
     sudo ~/node-monitor.sh install-debian # Debian
 	sudo ~/node.monitor.sh install-centos # CentOS

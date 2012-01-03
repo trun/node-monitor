@@ -19,6 +19,7 @@ var modules = {
     loggerModule: '../modules/logger'
 };
 
+/* Setup dependencies */
 for (var name in modules) {
 	/* Debug */
     /* console.log('Evaluating dependency in location: ' + location + ', with name: ' + name + ', path:' + modules[name]); */
@@ -40,11 +41,6 @@ function NodeMonitor() {
         var dao = new daoModule.DaoManagerModule(constants, utilities, logger);
         var plugins = new pluginsModule.PluginsManagerModule(constants, utilities, logger, dao);
 
-        this.constants = constants;
-        this.utilities = utilities;
-        this.logger = logger;
-        this.credentials = credentials;
-        this.dao = dao;
         this.plugins = plugins;
 
         /* Parse configuration */
