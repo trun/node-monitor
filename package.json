@@ -12,7 +12,7 @@
 		"step": "",
 		"nodeunit": "",
 		"async": "",
-		"node-cloudwatch": "0.0.3",
+		"node-cloudwatch": "0.0.4",
 		"long-stack-traces": "",
 		"github": "",
 		"forever": "",
