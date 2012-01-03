@@ -49,20 +49,21 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
 
     var params = {};
 
-    params['Namespace'] = process.env['cloudwatchNamespace'];
+    params['Namespace'] = Module.constants.globals[Module.constants.strings.CLOUDWATCH_NAMESPACE];
     params['MetricData.member.1.MetricName'] = metricName;
     params['MetricData.member.1.Unit'] = unit;
     params['MetricData.member.1.Value'] = value;
     params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-    params['MetricData.member.1.Dimensions.member.1.Value'] = Module.constants.globals[Module.constants.strings.INSTANCE_ID];
+    params['MetricData.member.1.Dimensions.member.1.Value'] = Module.constants.globals[Module.constants.strings.IP];
 
-    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch IP: ' + Module.constants.globals[Module.constants.strings.INSTANCE_ID]);
+    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch Namespace: ' + Module.constants.globals[Module.constants.strings.CLOUDWATCH_NAMESPACE]);
+    Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch IP: ' + Module.constants.globals[Module.constants.strings.IP]);
     Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch MetricName: ' + metricName);
     Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch Unit: ' + unit);
     Module.logger.write(Plugin.constants.levels.INFO, 'CloudWatch Value: ' + value);
 
     /* If we specified a parameter to enable, then we post */
-    if (process.env[Module.constants.strings.CLOUDWATCH_ENABLED] == Module.constants.strings.TRUE) {
+    if (Module.constants.globals[Module.constants.strings.CLOUDWATCH_ENABLED] == Module.constants.strings.TRUE) {
         try {
             Module.cloudwatchApi.request('PutMetricData', params, function (
             response) {});
