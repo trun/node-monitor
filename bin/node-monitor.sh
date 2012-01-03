@@ -26,11 +26,11 @@ case "$1" in
 	'update')
 		echo "Updating node-monitor"
 		cd ~/
-		rm ~/.node-monitor/*
-		cp ~/node-monitor/plugins/*_config ~/.node-monitor/
+		cp ~/.node-monitor/* ~/node-monitor/plugins/
 		rm -r ~/node-monitor
 		git clone $GIT_PROJECT
-		cp ~/.node-monitor/* ~/node-monitor/plugins/
+        cp ~/node-monitor/plugins/*_config ~/.node-monitor/
+        rm ~/.node-monitor/*
 		cd ~/node-monitor/bin
 		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
 		chmod a+x ~/node-monitor/bin/ec2-metadata
