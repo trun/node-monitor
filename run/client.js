@@ -53,8 +53,8 @@ function NodeMonitor() {
             utilities.parseCommandLineOptions(function () { 
             	/* Validate credentials */
                 credentials.check(function () { 
-                	 utilities.getInternalIP(function (ip) {
-                		 process.env[constants.strings.IP] = ip;
+                	 utilities.getInstanceId(function (id) {
+                		 process.env[constants.strings.INSTANCE_ID] = id;
                 	 });
                 	 callback();
                 });

@@ -65,10 +65,10 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
     params['MetricData.member.1.Unit'] = unit;
     params['MetricData.member.1.Value'] = value;
     params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-    params['MetricData.member.1.Dimensions.member.1.Value'] = process.env[Module.constants.strings.IP].replace('.', '-');
+    params['MetricData.member.1.Dimensions.member.1.Value'] = process.env[Module.constants.strings.INSTANCE_ID];
 
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Namespace: ' + process.env[Module.constants.strings.CLOUDWATCH_NAMESPACE]);
-    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch IP: ' + process.env[Module.constants.strings.IP].replace('.', '-'));
+    Module.logger.write(Module.constants.levels.INFO, 'CloudWatch IP: ' + process.env[Module.constants.strings.INSTANCE_ID]);
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch MetricName: ' + metricName);
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Unit: ' + unit);
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Value: ' + value);
