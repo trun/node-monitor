@@ -1,10 +1,4 @@
 plugin_poll_time=5
-plugin_directory=../plugins
-lib_directory=../lib
-config_directory=../config
-module_directory=../modules
-submodule_directory=../submodules
-daemon_lock=/tmp/nodemonitor_server.lock
-cloudwatch_namespace=M2MIO Instance Metrics
+cloudwatch_namespace=Namespace Instance Metrics
 AWS_ACCESS_KEY_ID=ID
 AWS_SECRET_ACCESS_KEY=KEY
