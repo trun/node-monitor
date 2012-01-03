@@ -62,8 +62,8 @@ function NodeMonitor() {
 
                     /* Validate credentials */
                     credentials.check();
-                    callback();
                 });
+                callback();
             });
         });
     };
