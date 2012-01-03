@@ -25,7 +25,6 @@ PluginsManagerModule.prototype.start = function () {
     var plugins = fs.readdirSync(process.cwd());
     plugins.forEach(function (plugin) {
         if (plugin.indexOf('_config') == -1) {
-            Module.logger.write(Module.constants.levels.INFO, 'Found plugin file: ' + plugin + ', requiring: ' + process.cwd() + '/' + plugin);
             plugin = plugin.split('.')[0];
             var loaded = require(process.cwd() + '/' + plugin);
             Module.plugins[loaded.name] = loaded;
