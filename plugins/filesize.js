@@ -45,8 +45,10 @@ this.poll = function (constants, utilities, logger, callback) {
         for (i = 0; i < splitBuffer.length; i++) {
             var aFile = [];
             aFile = splitBuffer[i].split('=');
-            self.logger.write(self.constants.levels.INFO, 'Checking file: ' + aFile[0] + ' with limit: ' + aFile[1]);
-            files.push(new fileCheck(aFile[0], Number(aFile[1])));
+            if (!self.utilities.isEmpty(aFile[0])) {
+            	self.logger.write(self.constants.levels.INFO, 'Checking file: ' + aFile[0] + ' with limit: ' + aFile[1]);
+            	files.push(new fileCheck(aFile[0], Number(aFile[1])));
+            }
         }
 
         files.forEach(function (file) {
