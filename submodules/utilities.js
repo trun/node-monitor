@@ -11,8 +11,9 @@ UtilitiesManagerModule.prototype.parseCommandLineOptions = function (callback) {
     var count = 0;
     process.argv.forEach(function (value, index, array) {
         if (count != 0 && count != 1) {
-            Module.constants.globals[value.split('=')[0]] = value.split('=')[1]; /* Debug */
-            console.log('Read cmd parameter: ' + value.split('=')[0] + ', with value: ' + value.split('=')[1]);
+            Module.constants.globals[value.split('=')[0]] = value.split('=')[1]; 
+            /* Debug */
+            /* console.log('Read cmd parameter: ' + value.split('=')[0] + ', with value: ' + value.split('=')[1]); */
         }
         count++;
     });
@@ -30,8 +31,9 @@ UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
         for (var i = 0; i < splitBuffer.length; i++) {
             var params = splitBuffer[i].split('=');
             if (params[0] != undefined && params[0] != '') {
-                Module.constants.globals[params[0]] = params[1]; /* Debug */
-                console.log('Read config parameter: ' + params[0] + ', with value: ' + params[1]);
+                Module.constants.globals[params[0]] = params[1]; 
+                /* Debug */
+                /* console.log('Read config parameter: ' + params[0] + ', with value: ' + params[1]); */
             }
         }
         callback();
@@ -53,8 +55,9 @@ UtilitiesManagerModule.prototype.autoPopulate = function (callback) {
             if (error) {
                 console.log('Error auto-configuring: ' + error + ', exiting application');
                 process.exit(1);
-            } else { /* Debug */
-                console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout);
+            } else { 
+            	/* Debug */
+                /* console.log('Read ec2 parameter: ' + parameter + ', with value: ' + stdout); */
                 Module.constants.globals[parameter] = stdout;
             }
         });

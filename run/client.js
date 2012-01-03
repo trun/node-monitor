@@ -51,11 +51,12 @@ function NodeMonitor() {
 
         /* Parse configuration */
         utilities.parseConfig(
-        constants.strings.MONITOR_CONFIG_FILE, function () { /* Parse command line options */
-            utilities.parseCommandLineOptions(function () { /* Auto-populate object based on EC2, if true, use EC2-metadata script */
-                utilities.autoPopulate(function () { /* Set default IP */
-                    console.log('DEBUG IPV4: ' + constants.globals[constants.strings.LOCAL_IPV4]);
-                    console.log('DEBUG IP: ' + constants.globals[constants.strings.IP]);
+        constants.strings.MONITOR_CONFIG_FILE, function () { 
+        	/* Parse command line options */
+            utilities.parseCommandLineOptions(function () { 
+            	/* Auto-populate object based on EC2, if true, use EC2-metadata script */
+                utilities.autoPopulate(function () { 
+                	/* Set default IP */
                     constants.globals[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
 
                     /* Validate credentials */
@@ -68,10 +69,13 @@ function NodeMonitor() {
 }
 
 var nodeMonitor = new NodeMonitor();
-nodeMonitor.init(function () { /* Debug */
+nodeMonitor.init(function () { 
+	/* Debug */
+	/*
     for (var i in nodeMonitor.constants.globals) {
         console.log('Global parameter: ' + i + ', with value: ' + nodeMonitor.constants.globals[i]);
     }
     console.log('Running on platform: ' + process.platform.toString());
+    */
     nodeMonitor.plugins.start();
 });

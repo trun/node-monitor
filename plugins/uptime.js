@@ -14,6 +14,7 @@ this.name = Plugin.name;
 this.type = Plugin.type;
 
 Plugin.format = function (data) {
+	data = data.replace(/^(\s*)((\S+\s*?)*)(\s*)$/,'$2');
     data = {
         seconds: data
     };

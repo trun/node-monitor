@@ -38,7 +38,8 @@ DaoManagerModule.prototype.write = function (pluginName, jsonString) {
     return false;
 };
 
-DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) { /* If we're in debug mode, don't post */
+DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) { 
+	/* If we're in debug mode, don't post */
     if (this.debugMode()) return;
 
     /* If we're not on EC2, don't post */
