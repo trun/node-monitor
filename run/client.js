@@ -58,7 +58,7 @@ function NodeMonitor() {
                 credentials.check(function () { 
                 	 utilities.getInternalIP(function (ip) {
                 		 logger.write(constants.levels.INFO, 'IP: ' + ip);
-                	        process.env[Module.constants.strings.IP] = ip;
+                	        process.env[constants.strings.IP] = ip;
                 	        callback();
                 	 });
                 });
