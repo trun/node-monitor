@@ -51,8 +51,7 @@ function NodeMonitor() {
         constants.globals = {};
 
         /* Parse configuration */
-        utilities.parseConfig(
-        constants.strings.MONITOR_CONFIG_FILE, function () { 
+        utilities.parseConfig(constants.strings.MONITOR_CONFIG_FILE, function () { 
         	/* Parse command line options */
             utilities.parseCommandLineOptions(function () { 
             	/* Validate credentials */
