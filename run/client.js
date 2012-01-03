@@ -55,12 +55,10 @@ function NodeMonitor() {
         constants.strings.MONITOR_CONFIG_FILE, function () { 
         	/* Parse command line options */
             utilities.parseCommandLineOptions(function () { 
-            	/* Auto-populate object based on EC2, if true, use EC2-metadata script */
-                utilities.autoPopulate(function () { 
-                    /* Validate credentials */
-                    credentials.check();
+            	/* Validate credentials */
+                credentials.check(function () { 
+                	callback();
                 });
-                callback();
             });
         });
     };
