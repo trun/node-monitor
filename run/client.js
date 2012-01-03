@@ -59,6 +59,8 @@ function NodeMonitor() {
                 utilities.autoPopulate(function () { 
                 	/* Set default IP */
                     constants.globals[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
+                    process.env[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
+                    logger.write(constants.levels.INFO, 'IP: ' + process.env[constants.strings.IP]);
 
                     /* Validate credentials */
                     credentials.check();
