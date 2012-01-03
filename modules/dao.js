@@ -3,7 +3,6 @@ var fs = require('fs'),
     Module = {},
     location = 'dao.js';
 
-/* Path to dependencies from file */
 var modules = {
     cloudwatch: 'node-cloudwatch'
 };
@@ -15,7 +14,12 @@ DaoManagerModule = function (constants, utilities, logger, dao) {
     Module.logger = logger;
     Module.dao = dao;
 
-    /* Setup dependencies */ 
+    Module.utilities.getInternalIP(function (ip) {
+        Module.logger.write(Module.constants.levels.INFO, 'IP: ' + ip);
+        process.env[Module.constants.strings.IP] = ip;
+    });
+
+    /* Setup dependencies */
     for (var name in modules) {
         eval('var ' + name + ' = require(\'' + modules[name] + '\')');
     }
@@ -37,8 +41,7 @@ DaoManagerModule.prototype.write = function (pluginName, jsonString) {
     return false;
 };
 
-DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) { 
-	/* If we're in debug mode, don't post */
+DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) { /* If we're in debug mode, don't post */
     if (this.debugMode()) return;
 
     /* If we're not on EC2, don't post */
@@ -64,7 +67,7 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
     if (Module.constants.globals[Module.constants.strings.CLOUDWATCH_ENABLED] == Module.constants.strings.TRUE) {
         try {
             Module.cloudwatchApi.request('PutMetricData', params, function (response) {
-            	 Module.logger.write(Module.constants.levels.INFO, 'CloudWatch response: ' + response.toString());
+                Module.logger.write(Module.constants.levels.INFO, 'CloudWatch response: ' + response.toString());
             });
         } catch (Exception) {
             Module.logger.write(Module.constants.levels.SEVERE, 'Error POSTing data to CloudWatch: ' + Exception);

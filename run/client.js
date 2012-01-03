@@ -37,11 +37,15 @@ function NodeMonitor() {
         var utilities = new utilitiesModule.UtilitiesManagerModule(constants);
         var logger = new loggerModule.LoggingManagerModule(constants, utilities);
         var credentials = new credentialsModule.CredentialManagerModule(constants, utilities, logger);
-        
+        var dao = new daoModule.DaoManagerModule(constants, utilities, logger);
+        var plugins = new pluginsModule.PluginsManagerModule(constants, utilities, logger, dao);
+
         this.constants = constants;
         this.utilities = utilities;
         this.logger = logger;
         this.credentials = credentials;
+        this.dao = dao;
+        this.plugins = plugins;
 
         /* Use object to store config options */
         constants.globals = {};
@@ -53,11 +57,6 @@ function NodeMonitor() {
             utilities.parseCommandLineOptions(function () { 
             	/* Auto-populate object based on EC2, if true, use EC2-metadata script */
                 utilities.autoPopulate(function () { 
-                	/* Set default IP */
-                    constants.globals[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
-                    process.env[constants.strings.IP] = constants.globals[constants.strings.LOCAL_IPV4];
-                    logger.write(constants.levels.INFO, 'IP: ' + process.env[constants.strings.IP]);
-
                     /* Validate credentials */
                     credentials.check();
                 });
@@ -76,7 +75,5 @@ nodeMonitor.init(function () {
     }
     console.log('Running on platform: ' + process.platform.toString());
     */
-	var dao = new daoModule.DaoManagerModule(constants, utilities, logger);
-	var plugins = new pluginsModule.PluginsManagerModule(nodeMonitor.constants, nodeMonitor.utilities, nodeMonitor.logger, nodeMonitor.dao);
     nodeMonitor.plugins.start();
 });
