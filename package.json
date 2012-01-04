@@ -17,8 +17,7 @@
 		"github": "",
 		"forever": "",
 		"iconv": "",
-		"ec2": "",
-	    "zmq": ""
+		"ec2": ""
 	},
 	"main": "run/client.js",
 	"license": {
