@@ -51,8 +51,8 @@ case "$1" in
 		export PATH=$PATH:/opt/node/bin
 		curl http://npmjs.org/install.sh | sudo sh
 		cd ~/
-		add-apt-repository ppa:chris-lea/zeromq
-		apt-get -y install libzmq-dev
+		# add-apt-repository ppa:chris-lea/zeromq
+		# apt-get -y install libzmq-dev
 		git clone $GIT_PROJECT
 		cd ~/node-monitor/bin
 		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
