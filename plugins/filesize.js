@@ -45,29 +45,25 @@ this.poll = function (constants, utilities, logger, callback) {
         for (i = 0; i < splitBuffer.length; i++) {
             var aFile = [];
             aFile = splitBuffer[i].split('=');
-            if (aFile[0] != '' || aFile[0] != undefined) {
-            	self.logger.write(self.constants.levels.INFO, 'Checking file: ' + aFile[0] + ' with limit: ' + aFile[1]);
-            	files.push(new fileCheck(aFile[0], Number(aFile[1])));
-            }
+            self.logger.write(self.constants.levels.INFO, 'Read file: ' + aFile[0] + ' with limit: ' + aFile[1]);
+            files.push(new fileCheck(aFile[0], Number(aFile[1])));
         }
 
         files.forEach(function (file) {
-            if (!utilities.isEmpty(file)) {
+            if (file.sizeLimit != '' && file.name != '') {
                 fs.stat(file.name, function (error, stat) {
-                    if (error) {
-                        if (error.errno === process.ENOENT) {
-                            return;
-                        }
-                        return;
-                    }
+                    if (error) 
+                    	self.logger.write(self.constants.levels.WARNING, 'Error reading filesize for: ' + file.name);
+                    
                     if (Number(stat.size) > Number(file.sizeLimit)) {
-                        self.logger.write(self.constants.levels.INFO, 'Emptying file, it exceeds limit');
-                        fs.writeFile(file, '', function (error) {
-                            if (error) self.logger.write(Module.constants.levels.WARNING, 'Error emptying file: ' + error);
+                        self.logger.write(self.constants.levels.INFO, 'Emptying file ' + file.name + ', ' + file.sizeLimit + ' exceeds limit');
+                        fs.writeFile(file.name, '', function (error) {
+                            if (error) 
+                            	self.logger.write(Module.constants.levels.WARNING, 'Error emptying file: ' + error);
 
                         });
                     } else {
-                        self.logger.write(self.constants.levels.INFO, 'Filesize is OK');
+                        self.logger.write(self.constants.levels.INFO, 'Filesize for ' + file.name + ' is OK');
                     }
                     callback(Plugin.name, 'FileSize-' + file, 'Kilobytes', stat.size, Plugin.format(file.name, stat.size));
                 });
