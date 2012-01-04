@@ -6,10 +6,11 @@ case "$1" in
      'start')
 		echo "Starting node-monitor"
 
-		cd ~/node-monitor/run
-	
+        #cd ~/node-monitor/run
 		#node client.js > /dev/null 2>&1 &
-		node client.js ec2=true debug=false console=false cloudwatch=true &
+        #node client.js ec2=true debug=false console=false cloudwatch=true &
+
+        start node-monitor
 		
 		;;
 	'stop')
@@ -58,6 +59,19 @@ case "$1" in
 		chmod a+x ~/node-monitor/bin/ec2-metadata
 		cd ~/node-monitor
 		npm link
+
+        cat >> /etc/init/node-monitor.conf <<EOF
+        description "node-monitor"
+        author "franklovecchio"
+
+        start on (local-filesystems and net-device-up IFACE=eth0)
+        stop on shutdown
+
+        respawn
+
+        exec sudo -u root sh -c "cd /home/ubuntu/node-monitor/run && /usr/local/bin/node /home/ubuntu/node-monitor/run/client.js ec2=true debug=false console=true cloudwatch=true>> /var/log/node-monitor.log 2>&1"
+        
+        EOF
 		
 		;;
 	'install-centos')

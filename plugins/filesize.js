@@ -45,7 +45,7 @@ this.poll = function (constants, utilities, logger, callback) {
         for (i = 0; i < splitBuffer.length; i++) {
             var aFile = [];
             aFile = splitBuffer[i].split('=');
-            if (!self.utilities.isEmpty(aFile[0])) {
+            if (aFile[0] != '' || aFile[0] != undefined) {
             	self.logger.write(self.constants.levels.INFO, 'Checking file: ' + aFile[0] + ' with limit: ' + aFile[1]);
             	files.push(new fileCheck(aFile[0], Number(aFile[1])));
             }
@@ -61,8 +61,6 @@ this.poll = function (constants, utilities, logger, callback) {
                         return;
                     }
                     if (Number(stat.size) > Number(file.sizeLimit)) {
-                        callback(Plugin.name, 'FileSize-' + file, 'Kilobytes', stat.size, Plugin.format(
-                        file.name, stat.size));
                         self.logger.write(self.constants.levels.INFO, 'Emptying file, it exceeds limit');
                         fs.writeFile(file, '', function (error) {
                             if (error) self.logger.write(Module.constants.levels.WARNING, 'Error emptying file: ' + error);
@@ -71,6 +69,7 @@ this.poll = function (constants, utilities, logger, callback) {
                     } else {
                         self.logger.write(self.constants.levels.INFO, 'Filesize is OK');
                     }
+                    callback(Plugin.name, 'FileSize-' + file, 'Kilobytes', stat.size, Plugin.format(file.name, stat.size));
                 });
             }
         });
