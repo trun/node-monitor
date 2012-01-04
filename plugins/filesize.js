@@ -65,7 +65,7 @@ this.poll = function (constants, utilities, logger, callback) {
                     } else {
                         self.logger.write(self.constants.levels.INFO, 'Filesize for ' + file.name + ' is OK');
                     }
-                    callback(Plugin.name, 'FileSize-' + file, 'Kilobytes', stat.size, Plugin.format(file.name, stat.size));
+                    callback(Plugin.name, 'FileSize-' + file.name, 'Kilobytes', stat.size, Plugin.format(file.name, stat.size));
                 });
             }
         });
