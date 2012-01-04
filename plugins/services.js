@@ -55,11 +55,11 @@ this.poll = function (constants, utilities, logger, callback) {
         splitBuffer = fd.toString().split('\n');
         for (i = 0; i < splitBuffer.length; i++) {
             var service = splitBuffer[i].split('=');
-            if (!self.utilities.isEmpty(service[0]) && !self.utilities.isEmpty(service[1])) {
+            if (service[0] != '' && service[1] != '') {
                 self.logger.write(self.constants.levels.INFO, 'Checking for service ' + service[0] + ' on port: ' + service[1]);
                 services.push(new Service(service[0], Number(service[1])));
             } else {
-            	if (!self.utilities.isEmpty(service[0])) {
+            	if (service[0] != '') {
             		self.logger.write(self.constants.levels.INFO, 'Checking for service ' + service[0]);
             		services.push(new Service(service[0], 0));
             	}
