@@ -14,17 +14,6 @@ this.name = Plugin.name;
 this.type = Plugin.type;
 
 Plugin.format = function (data, system) {
-    switch (system) {
-    case 'darwin':
-        Plugin.command = 'top -l 1 | awk \'/PhysMem/ {print $10}\'';
-        break;
-    case 'linux':
-        break;
-    default:
-        Plugin.logger.write(Plugin.constants.levels.WARNING, 'Unaccounted for system: ' + system);
-        break;
-    }
-
     data = data.replace(/(\r\n|\n|\r)/gm, '');
     data = data.replace('M', '');
     return data;

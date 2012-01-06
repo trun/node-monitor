@@ -20,6 +20,13 @@ UtilitiesManagerModule.prototype.parseCommandLineOptions = function (callback) {
 };
 
 UtilitiesManagerModule.prototype.parseConfig = function (configFile, callback) {
+	/* Switch to config directory */
+    try {
+        process.chdir(Module.constants.strings.CONFIG_DIRECTORY);
+    } catch (Exception) {
+        Module.logger.write(Module.constants.levels.SEVERE, 'Error switching to config directory: ' + Exception);
+    }
+    
     fs.readFile(configFile, function (error, fd) {
         if (error) {
             console.log('Error reading master config file, exiting application');
