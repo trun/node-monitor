@@ -34,6 +34,16 @@ Start the monitor in production mode:
 	
 	sudo ~/node-monitor.sh start
 	
+To create an Upstart job and be verbose (in Ubuntu):
+ 
+     touch /var/log/node-monitor.log
+     cat >> /etc/init/node-monitor.conf <<EOF
+     description "node-monitor"
+     start on (local-filesystems and net-device-up IFACE=eth0)
+     stop on shutdown
+     exec sudo -u root sh -c "cd /home/ubuntu/node-monitor/run && /usr/local/bin/node client.js ec2=true debug=false console=true cloudwatch=true >> /var/log/node-monitor.log 2>&1 &"     
+     EOF
+	
 ### Plugins
 
 * df.sh 
