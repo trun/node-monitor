@@ -1,7 +1,7 @@
 # node-monitor
 =====
 
-This is an EC2 monitoring application using node.js and the Amazon CloudWatch API.  The application is primarly used to push custom metrics, via plugins, to AWS.  Older branches pushed data to a NoSQL store + websockets (logs), but these functions are being ported to plugins as well. 
+This is an EC2 monitoring application which uses Node.js and the Amazon CloudWatch API.  The application is primarly used to push custom metrics, via plugins, to AWS.  Older branches pushed data to a NoSQL store + websockets (logs), but these functions are being ported to plugins as well. 
 
 ### Prerequisites
 	
