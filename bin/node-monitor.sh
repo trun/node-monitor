@@ -6,11 +6,11 @@ case "$1" in
      'start')
 		echo "Starting node-monitor"
 
-        #cd ~/node-monitor/run
-		#node client.js > /dev/null 2>&1 &
-        #node client.js ec2=true debug=false console=false cloudwatch=true &
+        cd ~/node-monitor/run
+	# node client.js > /dev/null 2>&1 &
+        node client.js ec2=true debug=false console=false cloudwatch=true &
 
-        start node-monitor
+        #start node-monitor
 		
 		;;
 	'stop')
