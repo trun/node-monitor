@@ -65,7 +65,7 @@ case "$1" in
 		yes | yum install gcc gcc-c++ autoconf automake openssl-devel nginx unzip gcc-c++ screen git-core monit
 		mkdir -p /monitoring
 		cd /monitoring
-		git clone https://github.com/joyent/node.git && cd /monitoring/node
+		git clone http://github.com/joyent/node.git && cd /monitoring/node
 		git checkout v0.4.8
 		./configure
 		make
