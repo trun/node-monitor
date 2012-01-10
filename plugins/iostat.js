@@ -37,7 +37,7 @@ this.poll = function (constants, utilities, logger, callback) {
         splitBuffer = fd.toString().split('\n');
         for (var i = 0; i < splitBuffer.length; i++) {
             var disk = splitBuffer[i];
-            if (!utilities.isEmpty(disk)) {
+            if (disk != '') {
             	self.logger.write(self.constants.levels.INFO, 'Disk to check: ' + disk);
             	disks.push(disk);
             }
