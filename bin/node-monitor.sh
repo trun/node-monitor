@@ -8,7 +8,8 @@ case "$1" in
 
         cd ~/node-monitor/run
 	# node client.js > /dev/null 2>&1 &
-        node client.js ec2=true debug=false console=false cloudwatch=true &
+	touch /var/log/node-monitor.log
+        node client.js ec2=true debug=false console=true cloudwatch=true > /var/log/node-monitor.log 2>&1 &
 
         #start node-monitor
 		
@@ -62,7 +63,7 @@ case "$1" in
 
 		;;
 	'install-centos')
-		yes | yum install gcc gcc-c++ autoconf automake openssl-devel nginx unzip gcc-c++ screen git-core monit
+		yes | yum install gcc gcc-c++ autoconf automake openssl-devel nginx unzip gcc-c++ screen git-core monit expat-devel
 		mkdir -p /monitoring
 		cd /monitoring
 		git clone http://github.com/joyent/node.git && cd /monitoring/node
@@ -72,12 +73,13 @@ case "$1" in
 		make install
 		cd /monitoring
 		sed -i "s/Defaults    secure_path = \/sbin:\/bin:\/usr\/sbin:\/usr\/bin/Defaults    secure_path = \/sbin:\/bin:\/usr\/sbin:\/usr\/bin:\/usr\/local\/bin/g" /etc/sudoers
-		curl http://npmjs.org/install.sh | sudo sh
-		npm install iconv forever ec2 knox
+		curl http://npmjs.org/install.sh | sh
 		cd ~/node-monitor/bin
 		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
 		chmod a+x ~/node-monitor/bin/ec2-metadata
-		
+		cd ~/node-monitor
+		npm link
+
 		;;
 	'')
 		echo "Usage: $0 [start|stop|update|install-debian|install-centos]"
