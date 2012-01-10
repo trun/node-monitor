@@ -63,6 +63,7 @@ case "$1" in
 		;;
 	'install-centos')
 		yes | yum install gcc gcc-c++ autoconf automake openssl-devel nginx unzip gcc-c++ screen git-core monit
+		mkdir -p /monitoring
 		cd /monitoring
 		git clone https://github.com/joyent/node.git && cd /monitoring/node
 		git checkout v0.4.8
@@ -73,6 +74,9 @@ case "$1" in
 		sed -i "s/Defaults    secure_path = \/sbin:\/bin:\/usr\/sbin:\/usr\/bin/Defaults    secure_path = \/sbin:\/bin:\/usr\/sbin:\/usr\/bin:\/usr\/local\/bin/g" /etc/sudoers
 		curl http://npmjs.org/install.sh | sudo sh
 		npm install iconv forever ec2 knox
+		cd ~/node-monitor/bin
+		wget http://s3.amazonaws.com/ec2metadata/ec2-metadata
+		chmod a+x ~/node-monitor/bin/ec2-metadata
 		
 		;;
 	'')
