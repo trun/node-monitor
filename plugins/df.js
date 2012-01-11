@@ -37,7 +37,7 @@ this.poll = function (constants, utilities, logger, callback) {
         splitBuffer = fd.toString().split('\n');
         for (var i = 0; i < splitBuffer.length; i++) {
             var disk = splitBuffer[i];
-            if (disk != '') {
+            if (utilities.trim(disk) != '') {
             	self.logger.write(self.constants.levels.INFO, 'Disk to check: ' + disk);
             	disks.push(disk);
             }
@@ -49,7 +49,7 @@ this.poll = function (constants, utilities, logger, callback) {
                 child;
             child = exec(Plugin.command, function (error, stdout, stderr) {
             	/* Misconfigured disk */
-            	if (!utilities.isEmpty(stdout.toString().replace('%', '')))
+            	if (utilities.trim(stdout.toString().replace('%', '')) != '')
             		callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()));
             	
             });
