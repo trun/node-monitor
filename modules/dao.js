@@ -59,7 +59,7 @@ DaoManagerModule.prototype.asciiConvert = function (string) {
     return res.substr(0, res.length - 1);
 };
 
-DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) { /* If we're in debug mode, don't post */
+DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value, dimensions) { /* If we're in debug mode, don't post */
     if (this.debugMode()) return;
 
     /* If we're not on EC2, don't post */
@@ -73,6 +73,14 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
     params['MetricData.member.1.Value'] = value;
     params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
     params['MetricData.member.1.Dimensions.member.1.Value'] = process.env[Module.constants.strings.INSTANCE_ID].toString().trim();
+    if (dimensions) {
+	i = 2;
+	for (var name in dimensions) {
+	    params['MetricData.member.1.Dimensions.member.' + i + '.Name'] = name;
+	    params['MetricData.member.1.Dimensions.member.' + i + '.Value'] = dimensions[name];
+	    i++;
+	}
+    }
 
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch Namespace: ' + process.env[Module.constants.strings.CLOUDWATCH_NAMESPACE]);
     Module.logger.write(Module.constants.levels.INFO, 'CloudWatch IP: ' + process.env[Module.constants.strings.INSTANCE_ID]);

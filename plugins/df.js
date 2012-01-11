@@ -18,7 +18,10 @@ Plugin.format = function (diskToCheck, data) {
     data = data.replace('%', '');
     data = {
         disk: diskToCheck,
-        size: data
+        size: data,
+        dimensions: {
+            Disk: diskToCheck
+        }
     };
     return JSON.stringify(data);
 };
