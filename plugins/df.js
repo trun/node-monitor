@@ -51,7 +51,6 @@ this.poll = function (constants, utilities, logger, callback) {
             	/* Misconfigured disk */
            	if (utilities.trim(stdout.toString().replace('%', '')) != '') {
  		    callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()), { Disk: diskToCheck });
-		    callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()));
             	}
             });
         });

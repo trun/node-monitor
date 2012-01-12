@@ -48,10 +48,9 @@ this.poll = function (constants, utilities, logger, callback) {
             var exec = require('child_process').exec,
                 child;
             child = exec(Plugin.command, function (error, stdout, stderr) {
-            	/* Misconfigured disk */
-            	if (utilities.trim(stdout.toString().replace('%', '')) != '')
-            		callback(Plugin.name, 'DiskUtilization', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()));
-            	
+		if (utilities.trim(stdout.toString().replace('%', '')) != '') {
+		    callback(Plugin.name, 'DiskUtilization', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()), { Disk: diskToCheck });
+		}
             });
         });
     });
