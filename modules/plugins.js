@@ -52,10 +52,9 @@ PluginsManagerModule.prototype.executePlugins = function () {
             Module.logger.write(Module.constants.levels.INFO, 'Running plugin: ' + plugin);
             Module.plugins[plugin].poll(
             Module.constants, Module.utilities, Module.logger, function (
-            pluginName, metricName, unit, value, data) {
+		pluginName, metricName, unit, value, data, dimensions) {
                 Module.logger.write(Module.constants.levels.INFO, 'Returning metrics for plugin: ' + pluginName);
                 /* Post to CloudWatch */
-                dimensions = data ? data.dimensions : null;
                 Module.dao.postCloudwatch(metricName, unit, value, dimensions); 
                 /* Store JSON */
                 // Module.dao.write(pluginName, data);

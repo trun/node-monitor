@@ -18,10 +18,7 @@ Plugin.format = function (diskToCheck, data) {
     data = data.replace('%', '');
     data = {
         disk: diskToCheck,
-        size: data,
-        dimensions: {
-            Disk: diskToCheck
-        }
+        size: data
     };
     return JSON.stringify(data);
 };
@@ -52,9 +49,10 @@ this.poll = function (constants, utilities, logger, callback) {
                 child;
             child = exec(Plugin.command, function (error, stdout, stderr) {
             	/* Misconfigured disk */
-            	if (utilities.trim(stdout.toString().replace('%', '')) != '')
-            		callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()));
-            	
+           	if (utilities.trim(stdout.toString().replace('%', '')) != '') {
+ 		    callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()), { Disk: diskToCheck });
+		    callback(Plugin.name, 'DiskSpace', 'Percent', stdout.toString().replace('%', ''), Plugin.format(diskToCheck, stdout.toString()));
+            	}
             });
         });
     });
